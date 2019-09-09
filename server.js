@@ -46,7 +46,6 @@ app.post('/webhook', function(req, res) {
         // If user send text
         if (message.message.text) {
           handlerMessage(message.message.text, senderId,name)
-          sendMessage(senderId,"BOT :" + message.message.text)
         }
       }
     }
@@ -75,10 +74,10 @@ function handlerMessage(message, senderId,name) {
 }
 
 function showHelp(senderId,name){
-  sendMessage(senderId,"Hi,\n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n" +
-      "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời : \"sleepy\".\n\n" +
-      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\".\n\n"+
-      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \"wakeup + thời gian\", ví dụ \"wakeup 7:00\".\n")
+  sendMessage(senderId,"Hi,\n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n\n" +
+      "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời :\n\"sleepy\".\n\n" +
+      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn thực hiện câu lệnh trả lời :\n\"sleepy+ thời gian\" , ví dụ \"sleep 20:00\".\n\n"+
+      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00\".\n")
 }
 
 function calTimeSleep(time) {
@@ -96,17 +95,18 @@ function calTimeWakeUp(time,senderId) {
     const date = new Date();
     let time = date.getTime();
     var listTimeSleep = []
-    for (var i = 0; i < 6; i++) {
+    for (var i = 1; i < 7; i++) {
       var timeSleep = time + 90 * i + 14
       listTimeSleep.push(timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " +nodeDate.format(new Date(), 'HH:MM') +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
         + intlDate.format( new Date( 1000 * listTimeSleep[0] ) )
-        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[1] ) )
-        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[2] ) )
-        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[3] ) )
-        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[4] ) )
-        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[5] ) ))
+        + " hoặc " +intlDate.format( new Date( 1000 * listTimeSleep[1] ) )
+        + " hoặc " +intlDate.format( new Date( 1000 * listTimeSleep[2] ) )
+        + " hoặc " +intlDate.format( new Date( 1000 * listTimeSleep[3] ) )
+        + " hoặc " +intlDate.format( new Date( 1000 * listTimeSleep[4] ) )
+        + " hoặc " +intlDate.format( new Date( 1000 * listTimeSleep[5] ) )
+    )
   }else {
     showHelp(senderId,name)
   }
