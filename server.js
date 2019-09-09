@@ -92,10 +92,10 @@ function calTimeSleep(time) {
 
 function calTimeWakeUp(time,senderId) {
   if (time == 0) {
-    var time = new Date.now();
+    var timeCurrent = new Date.now();
     var listTimeSleep = []
     for (var i = 1; i < 7; i++) {
-      var timeSleep = time + 90 * i + 14
+      var timeSleep = timeCurrent + 90 * i + 14
       listTimeSleep.push(timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " +nodeDate.format(new Date(), 'HH:MM') +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
