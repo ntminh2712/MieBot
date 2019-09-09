@@ -26,7 +26,23 @@ var options = {
 
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
-
+  const currentTime = new Date().toLocaleTimeString('en-US', {
+    timeZone: 'Asia/Bangkok'
+  });
+  var listTimeSleep = []
+  for (var i = 0; i < 6; i++) {
+    var timeSleep = currentTime + 90 * (i+1) + 14
+    listTimeSleep.push(currentTime + timeSleep)
+  }
+  console.log(listTimeSleep.length)
+  console.log("Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
+      + timeConverter(listTimeSleep[0])
+      + " hoặc " + timeConverter(listTimeSleep[1])
+      + " hoặc " + timeConverter(listTimeSleep[2])
+      + " hoặc " + timeConverter(listTimeSleep[3])
+      + " hoặc " + timeConverter(listTimeSleep[4])
+      + " hoặc " + timeConverter(listTimeSleep[5])
+  )
 });
 
 app.get('/webhook', function(req, res) {
@@ -54,7 +70,13 @@ app.post('/webhook', function(req, res) {
 
   res.status(200).send("OK");
 });
-
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var time = hour + ':' + min ;
+  return time;
+}
 function handlerMessage(message, senderId,name) {
   if (message == "help") {
     showHelp(senderId,name)
@@ -97,8 +119,8 @@ function calTimeWakeUp(time,senderId,type) {
       timeZone: 'Asia/Bangkok'
     });
     var listTimeSleep = []
-    for (var i = 1; i < 7; i++) {
-      var timeSleep = time + 90 * i + 14
+    for (var i = 0; i < 6; i++) {
+      var timeSleep = currentTime + 90 * (i+1) + 14
       listTimeSleep.push(currentTime + timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
