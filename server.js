@@ -26,6 +26,7 @@ var options = {
 
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
+
 });
 
 app.get('/webhook', function(req, res) {
@@ -92,12 +93,14 @@ function calTimeSleep(time) {
 
 function calTimeWakeUp(time,senderId,type) {
   if (type == 0) {
-    var today = new Date();
-    var currentTime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const currentTime = new Date().toLocaleTimeString('en-US', {
+      timeZone: 'Asia/Bangkok'
+    });
     sendMessage(senderId,currentTime)
     var listTimeSleep = []
     for (var i = 1; i < 7; i++) {
       var timeSleep = time + 90 * i + 14
+      sendMessage(senderId,timeSleep)
       listTimeSleep.push(currentTime + timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
