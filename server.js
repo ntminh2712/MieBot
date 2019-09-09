@@ -53,10 +53,13 @@ function handlerMessage(message, senderId,name) {
     showHelp(senderId,name)
   }else {
     var option = message.substring(0,5)
+    sendMessage(senderId, option)
     if (option == "sleepy") {
       sendMessage(senderId, "Hi sleep");
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
+    }else {
+      sendMessage(senderId, "Kiểm tra lại tin nhắn của bạn và thử lại sau nhé! ")
     }
   }
 }
