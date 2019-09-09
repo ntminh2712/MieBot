@@ -26,16 +26,22 @@ var options = {
 
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
-  const currentTime = new Date().toLocaleString('en-US', {
+  let currentDate = new Date().toLocaleString('en-US', {
     timeZone: 'Asia/Bangkok'
   });
+  let currentTime = new Date().toLocaleTimeString('en-US', {
+    timeZone: 'Asia/Bangkok'
+  });
+
   var listTimeSleep = []
   for (var i = 0; i < 6; i++) {
-    var timeSleep = Date.parse(currentTime) + 90*60 * (i+1) + 14*60
+    var timeSleep = Date.parse(currentDate)/1000 + 90*60 * (i + 1) + 14 * 60
+
     listTimeSleep.push(timeSleep)
   }
-  console.log(listTimeSleep.length)
-  console.log(listTimeSleep)
+  console.log(currentDate)
+  console.log(currentTime)
+  console.log(Date.parse(currentDate))
   console.log("Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
       + timeConverter(listTimeSleep[0])
       + " hoặc " + timeConverter(listTimeSleep[1])
@@ -116,12 +122,15 @@ function calTimeSleep(time) {
 
 function calTimeWakeUp(time,senderId,type) {
   if (type == 0) {
+    const currentDate = new Date().toLocaleString('en-US', {
+      timeZone: 'Asia/Bangkok'
+    });
     const currentTime = new Date().toLocaleString('en-US', {
       timeZone: 'Asia/Bangkok'
     });
     var listTimeSleep = []
     for (var i = 0; i < 6; i++) {
-      var timeSleep = Date.parse(currentTime) + 90*60 * (i+1) + 14*60
+      var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i+1) + 14*60
       listTimeSleep.push(timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
