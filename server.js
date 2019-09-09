@@ -8,6 +8,12 @@ var express = require('express');
 var request = require('request');
 var router = express();
 let nodeDate = require('date-and-time');
+var options = {
+      hour: 'numeric',
+      minute: 'numeric'
+    },
+    intlDate = new Intl.DateTimeFormat( undefined, options );
+
 var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -39,7 +45,6 @@ app.post('/webhook', function(req, res) {
         // If user send text
         if (message.message.text) {
           handlerMessage(message.message.text, senderId,name)
-
         }
       }
     }
@@ -83,11 +88,6 @@ function calTimeSleep(time) {
   sendMessage(senderId,"")
 
 }
-var options = {
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    intlDate = new Intl.DateTimeFormat( undefined, options );
 
 function calTimeWakeUp(time,senderId) {
   if (time == 0) {
@@ -105,6 +105,8 @@ function calTimeWakeUp(time,senderId) {
         + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[3] ) )
         + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[4] ) )
         + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[5] ) ))
+  }else {
+    showHelp(senderId,name)
   }
 }
 
