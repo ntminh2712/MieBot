@@ -8,20 +8,21 @@ var express = require('express');
 var request = require('request');
 var router = express();
 let nodeDate = require('date-and-time');
-var options = {
-      hour: 'numeric',
-      minute: 'numeric'
-    },
-    intlDate = new Intl.DateTimeFormat( undefined, options );
+
 
 var app = express();
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 var server = http.createServer(app);
-
+var options = {
+      hour: 'numeric',
+      minute: 'numeric'
+    },
+    intlDate = new Intl.DateTimeFormat( undefined, options );
 
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
@@ -45,6 +46,7 @@ app.post('/webhook', function(req, res) {
         // If user send text
         if (message.message.text) {
           handlerMessage(message.message.text, senderId,name)
+          sendMessage(senderId,"BOT :" + message.message.text)
         }
       }
     }
