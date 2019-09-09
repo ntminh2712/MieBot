@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
 var router = express();
-
+let nodeDate = require('date-and-time');
 var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -52,31 +52,60 @@ function handlerMessage(message, senderId,name) {
   if (message == "help") {
     showHelp(senderId,name)
   }else {
-    var option = message.substring(0,5)
-    sendMessage(senderId, option)
+    var option = message.substring(0,6)
+    var time = message.substring(7,12)
+    var parts = time.split(':');
+    var minutes = parts[1]*60+ +parts[0];
     if (option == "sleepy") {
-      sendMessage(senderId, "Hi sleep");
+      calTimeWakeUp(0,senderId)
+      sendMessage(senderId, "Chúc bạn ngủ ngon 😘");
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
     }else {
-      sendMessage(senderId, "Kiểm tra lại tin nhắn của bạn và thử lại sau nhé! ")
+      sendMessage(senderId, "Kiểm tra lại câu lệnh của bạn và thử lại sau nhé! Gõ \"help\" để xem danh sách câu lệnh.")
     }
   }
 }
 
 function showHelp(senderId,name){
-  sendMessage(senderId,"Hi " + name + ", /n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy." +
-      "Để tính thời gian thức dậy bắt đầu từ lúc bạn nhắn tin hãy trả lời : \"sleepy\"" +
-      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\"."+
-      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \"wakeup + thời gian\", ví dụ \"wakeup 7:00\".")
+  sendMessage(senderId,"Hi,\n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n" +
+      "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời : \"sleepy\".\n\n" +
+      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\".\n\n"+
+      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \"wakeup + thời gian\", ví dụ \"wakeup 7:00\".\n")
 }
 
 function calTimeSleep(time) {
+  var listTimeSleep = []
+  for (var i = 0; i <= 6; i++) {
+    var timeSleep = time - 90*i -14
+    listTimeSleep.push(timeSleep)
+  }
+  sendMessage(senderId,"")
 
 }
+var options = {
+      hour: 'numeric',
+      minute: 'numeric',
+    },
+    intlDate = new Intl.DateTimeFormat( undefined, options );
 
-function calTimeWakeUp(time) {
-
+function calTimeWakeUp(time,senderId) {
+  if (time == 0) {
+    const date = new Date();
+    let time = date.getTime();
+    var listTimeSleep = []
+    for (var i = 0; i < 6; i++) {
+      var timeSleep = time + 90 * i + 14
+      listTimeSleep.push(timeSleep)
+    }
+    sendMessage(senderId, "Bây giờ là " +nodeDate.format(new Date(), 'HH:MM') +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
+        + intlDate.format( new Date( 1000 * listTimeSleep[0] ) )
+        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[1] ) )
+        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[2] ) )
+        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[3] ) )
+        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[4] ) )
+        + " hoặc" +intlDate.format( new Date( 1000 * listTimeSleep[5] ) ))
+  }
 }
 
 function sendMessage(senderId, message) {
@@ -96,7 +125,6 @@ function sendMessage(senderId, message) {
     }
   });
 }
-
 
 
 // app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3002);
