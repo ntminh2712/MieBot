@@ -38,8 +38,9 @@ app.post('/webhook', function(req, res) {
       if (message.message) {
         // If user send text
         if (message.message.text) {
-          handlerMessage(text, senderId,name)
           sendMessage(senderId, "Hi "+ name +"");
+          handlerMessage(text, senderId,name)
+
         }
       }
     }
@@ -52,7 +53,12 @@ function handlerMessage(message, senderId,name) {
   if (message == "help") {
     showHelp(message, senderId,name)
   }else {
+    var option = message.substring(0,5)
+    if (option == "sleepy") {
 
+    }else if (option == "wakeup"){
+
+    }
   }
 }
 
