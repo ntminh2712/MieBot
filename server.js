@@ -32,14 +32,16 @@ app.post('/webhook', function(req, res) {
   var entries = req.body.entry;
   for (var entry of entries) {
     var messaging = entry.messaging;
+    var name = entry.name;
     for (var message of messaging) {
       var senderId = message.sender.id;
+      var name1 = message.name
       if (message.message) {
         // If user send text
         if (message.message.text) {
           var text = message.message.text;
-          console.log(text); // In tin nhắn người dùng
-          sendMessage(senderId, "Mie bot đây: " + text);
+          handlerMessage(message, senderId,name)
+          sendMessage(senderId, "Hi"+ name +"");
         }
       }
     }
@@ -47,6 +49,29 @@ app.post('/webhook', function(req, res) {
 
   res.status(200).send("OK");
 });
+
+function handlerMessage(message, senderId,name) {
+  if (message == "help") {
+    showHelp(message, senderId,name)
+  }else {
+
+  }
+}
+
+function showHelp(message, senderId,name){
+  sendMessage(senderId,"Hi " + name + ", /n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy. /n eep" +
+      "Để tính thời gian thức dậy bắt đầu từ lúc bạn nhắn tin hãy trả lời : \"sleepy\" ./n" +
+      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\"./n"+
+      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \"wakeup + thời gian\", ví dụ \"wakeup 7:00\".")
+}
+
+function calTimeSleep(time) {
+
+}
+
+function calTimeWakeUp(time) {
+
+}
 
 function sendMessage(senderId, message) {
   request({
@@ -65,6 +90,7 @@ function sendMessage(senderId, message) {
     }
   });
 }
+
 
 
 // app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3002);
