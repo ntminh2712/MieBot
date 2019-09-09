@@ -32,16 +32,15 @@ app.post('/webhook', function(req, res) {
   var entries = req.body.entry;
   for (var entry of entries) {
     var messaging = entry.messaging;
-    var name = entry.name;
     for (var message of messaging) {
       var senderId = message.sender.id;
-      var name1 = message.name
+      var name = message.name
       if (message.message) {
         // If user send text
         if (message.message.text) {
           var text = message.message.text;
           handlerMessage(message, senderId,name)
-          sendMessage(senderId, "Hi"+ name +"");
+          sendMessage(senderId, "Hi "+ name +"");
         }
       }
     }
