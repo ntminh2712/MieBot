@@ -38,8 +38,7 @@ app.post('/webhook', function(req, res) {
       if (message.message) {
         // If user send text
         if (message.message.text) {
-          sendMessage(senderId, "Hi "+ name +"");
-          handlerMessage(text, senderId,name)
+          handlerMessage(message.message.text, senderId,name)
 
         }
       }
@@ -51,21 +50,21 @@ app.post('/webhook', function(req, res) {
 
 function handlerMessage(message, senderId,name) {
   if (message == "help") {
-    showHelp(message, senderId,name)
+    showHelp(senderId,name)
   }else {
     var option = message.substring(0,5)
     if (option == "sleepy") {
-
+      sendMessage(senderId, "Hi sleep");
     }else if (option == "wakeup"){
-
+      sendMessage(senderId, "Hi wakeup");
     }
   }
 }
 
-function showHelp(message, senderId,name){
-  sendMessage(senderId,"Hi " + name + ", /n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy. /n eep" +
-      "Để tính thời gian thức dậy bắt đầu từ lúc bạn nhắn tin hãy trả lời : \"sleepy\" ./n" +
-      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\"./n"+
+function showHelp(senderId,name){
+  sendMessage(senderId,"Hi " + name + ", /n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy." +
+      "Để tính thời gian thức dậy bắt đầu từ lúc bạn nhắn tin hãy trả lời : \"sleepy\"" +
+      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn nhắn tin hãy trả lời : \"+ thời gian\" , ví dụ \"sleep 20:00\"."+
       "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \"wakeup + thời gian\", ví dụ \"wakeup 7:00\".")
 }
 
