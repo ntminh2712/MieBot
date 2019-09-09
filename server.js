@@ -64,7 +64,7 @@ function handlerMessage(message, senderId,name) {
     var parts = time.split(':');
     var minutes = parts[1]*60+ +parts[0];
     if (option == "sleepy") {
-      calTimeWakeUp(0,senderId,0)
+      calTimeWakeUp(minutes,senderId,0)
       sendMessage(senderId, "Chúc bạn ngủ ngon 😘");
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
@@ -96,11 +96,9 @@ function calTimeWakeUp(time,senderId,type) {
     const currentTime = new Date().toLocaleTimeString('en-US', {
       timeZone: 'Asia/Bangkok'
     });
-    sendMessage(senderId,currentTime)
     var listTimeSleep = []
     for (var i = 1; i < 7; i++) {
       var timeSleep = time + 90 * i + 14
-      sendMessage(senderId,timeSleep)
       listTimeSleep.push(currentTime + timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
@@ -134,13 +132,6 @@ function sendMessage(senderId, message) {
   });
 }
 
-
-// app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 3002);
-// app.set('ip', process.env.OPENSHIFT_NODEJS_IP || process.env.IP || "127.0.0.1");
-
-// server.listen(app.get('port'), app.get('ip'), function() {
-//   console.log("Chat bot server listening at %s:%d ", app.get('ip'), app.get('port'));
-// });
 const port = process.env.PORT || 8000;
 server.listen(port, () => {
   console.log("App is running on port " + port);
