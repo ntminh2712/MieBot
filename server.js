@@ -74,7 +74,7 @@ function handlerMessage(message, senderId,name) {
 }
 
 function showHelp(senderId,name){
-  sendMessage(senderId,"Hi,\n Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n\n" +
+  sendMessage(senderId,"Hi,Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n\n" +
       "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời :\n\"sleepy\".\n\n" +
       "Để tính thời gian thức dậy tại một thời điểm nhất định bạn thực hiện câu lệnh trả lời :\n\"sleepy+ thời gian\" , ví dụ \"sleep 20:00\".\n\n"+
       "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00\".\n")
@@ -92,7 +92,7 @@ function calTimeSleep(time) {
 
 function calTimeWakeUp(time,senderId) {
   if (time == 0) {
-    const time = new Date.now();
+    var time = new Date.now();
     var listTimeSleep = []
     for (var i = 1; i < 7; i++) {
       var timeSleep = time + 90 * i + 14
