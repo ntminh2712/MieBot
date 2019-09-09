@@ -38,8 +38,7 @@ app.post('/webhook', function(req, res) {
       if (message.message) {
         // If user send text
         if (message.message.text) {
-          var text = message.message.text;
-          handlerMessage(message, senderId,name)
+          handlerMessage(text, senderId,name)
           sendMessage(senderId, "Hi "+ name +"");
         }
       }
