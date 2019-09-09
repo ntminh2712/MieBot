@@ -92,8 +92,7 @@ function calTimeSleep(time) {
 
 function calTimeWakeUp(time,senderId) {
   if (time == 0) {
-    const date = new Date();
-    let time = date.getTime();
+    const time = new Date.now();
     var listTimeSleep = []
     for (var i = 1; i < 7; i++) {
       var timeSleep = time + 90 * i + 14
