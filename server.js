@@ -8,7 +8,7 @@ var express = require('express');
 var request = require('request');
 var router = express();
 let nodeDate = require('date-and-time');
-
+var moment = require('moment');
 
 var app = express();
 
@@ -24,26 +24,41 @@ app.get('/', (req, res) => {
   let currentDate = new Date().toLocaleString('en-US', {
     timeZone: 'Asia/Bangkok'
   });
-  let currentTime = new Date().toLocaleTimeString('en-US', {
-    timeZone: 'Asia/Bangkok'
-  });
+  moment.locale();
 
-  var listTimeSleep = []
-  for (var i = 0; i < 6; i++) {
-    var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i + 1) + 14 * 60
+  console.log(currentDate)
+  //===========ZIN===========
+  var date = moment().format('l');
+  var today = new Date()
+  var inputTimeHours = 8;
+  var text = '8px';
+  var integer = parseInt(text, 10);
+  var inputTimeMinutes = "00"
+  var inputTimeSeconds = "00"
+  var typeHour = "AM"
 
-    listTimeSleep.push(timeSleep)
-  }
-  console.log(listTimeSleep)
-  console.log("Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
-      + timeConverter(listTimeSleep[0])
-      + " hoặc " + timeConverter(listTimeSleep[1])
-      + " hoặc " + timeConverter(listTimeSleep[2])
-      + " hoặc " + timeConverter(listTimeSleep[3])
-      + " hoặc " + timeConverter(listTimeSleep[4])
-      + " hoặc " + timeConverter(listTimeSleep[5]))
+  var tsCurentTime = strToTimestamp(currentDate)
+  var tsInputTime = strToTimestamp(date +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
+
+    if (tsCurentTime > tsInputTime){
+      var tsInputTime1 = strToTimestamp(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf() + 1) +"/"+
+          today.getFullYear() +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
+
+      console.log(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf() + 1) +"/"+
+          today.getFullYear() +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
+
+      console.log("Ngay mai luc "+ tsInputTime1 + " may phai day, oc cho" )
+    }else {
+      console.log("Dung gio "+ inputTimeHours + " hom nay phai day, oc cho" )
+    }
 
 });
+
+function strToTimestamp(strDate){
+  var datum = Date.parse(strDate);
+  return datum/1000;
+}
+
 
 app.get('/webhook', function(req, res) {
   if (req.query['hub.verify_token'] === 'MieBotVerify') {
