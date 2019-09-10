@@ -27,7 +27,9 @@ var listSuggets = ["Điều chỉnh nhiệt độ phòng. Chuyên gia giấc ng�
 "Hiểu rõ và điều chỉnh được chu kỳ của giấc ngủ là bí quyết giúp bạn có một giấc ngủ ngon lành và thức dậy sảng khoái dù đi ngủ ở bất cứ thời điểm nào."]
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
-  console.log(listSuggets[Math.floor(Math.random() * listSuggets.length)])
+  var string = "wakeup 7:00 AM"
+  var time = string.substring(7,string.length)
+  console.log(time)
 });
 
 function strToTimestamp(strDate){
@@ -120,7 +122,7 @@ function calTimeSleep(time,senderId) {
       + " hoặc " + timeConverter(listTimeSleep[1])
       + " hoặc " + timeConverter(listTimeSleep[0])
   )
-
+  setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1000);
 }
 
 function calTimeWakeUp(senderId,type) {
@@ -144,7 +146,7 @@ function calTimeWakeUp(senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
-    setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 2000);
+    setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1000);
     setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2000);
 
   }else {
