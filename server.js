@@ -72,16 +72,18 @@ app.post('/webhook', function(req, res) {
 });
 
 function handlerMessage(message, senderId,name) {
-  if (message == "help") {
+  if (message == "help" || message == "Help") {
     showHelp(senderId,name)
-  }else {
+  }else if (message == "hello" || message == "Hello"){
+    sendMessage(senderId, "Hi, cảm ơn vì tin nhắt của bạn, nếu đây là lần đầu thì gõ \"help\" để xem danh sách câu lệnh nhé")
+  }else
+    {
     var option = message.substring(0,6)
     var time = message.substring(7,12)
     var parts = time.split(':');
     var minutes = parts[1]*60+ +parts[0];
-    if (option == "sleepy") {
-      calTimeWakeUp(minutes,senderId,0)
-      sendMessage(senderId, "Chúc bạn ngủ ngon 😘");
+    if (option == "sleepy" || option == "Sleep") {
+      calTimeWakeUp(minutes,senderId,0)y
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
     }else {
@@ -128,6 +130,7 @@ function calTimeWakeUp(time,senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
+    sendMessage(senderId, "Chúc bạn ngủ ngon 😘");
   }else {
     showHelp(senderId,name)
   }
@@ -150,6 +153,7 @@ function sendMessage(senderId, message) {
     }
   });
 }
+
 
 function timeConverter(UNIX_timestamp){
   var date =new Date(+UNIX_timestamp*1000)
