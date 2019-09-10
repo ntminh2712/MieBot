@@ -19,39 +19,15 @@ app.use(bodyParser.urlencoded({
 }));
 var server = http.createServer(app);
 
+var listSuggets = ["Điều chỉnh nhiệt độ phòng. Chuyên gia giấc ngủ cho biết, nhiệt độ phòng khoảng 22 -23 độ C là thích hợp nhất để có giấc ngủ ngon."
+  ,"Để tránh tình trạng mệt mỏi, uể oải khi thức giấc, bạn cần điều chỉnh giờ đi ngủ và giờ thức giấc của mình phù hợp sao cho thời điểm bạn thức giấc cũng chính là thời điểm 1 chu kỳ của giấc ngủ kết thúc.",
+  "Tránh xa các thiết bị điện tử phát ra ánh sáng xanh. Loại ánh sáng phát ra từ màn hình điện thoại, máy tính chính là 1 nguyên nhân chính dẫn đến chất lượng giấc ngủ kém.",
+"Ánh sáng xanh có thể ảnh hưởng tới hormone điều chỉnh giấc ngủ melatonin và khiến cho não luôn trong trạng thái \"nửa tỉnh nửa mê\" thay vì ở trạng thái thư giãn, nghỉ ngơi hoàn toàn.",
+"Dựa trên những kiến thức về chu kỳ giấc ngủ, tất cả những gì chúng ta cần làm để ngủ ngon, ngủ sâu là tuân thủ 3 nguyên tắc tối ưu cho các giai đoạn của giấc ngủ: Giảm thời gian ru ngủ và ngủ nông, tăng thời gian ngủ sâu và ngủ rất sâu, tối ưu hóa thời gian ngủ mơ tích cực.",
+"Hiểu rõ và điều chỉnh được chu kỳ của giấc ngủ là bí quyết giúp bạn có một giấc ngủ ngon lành và thức dậy sảng khoái dù đi ngủ ở bất cứ thời điểm nào."]
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
-  let currentDate = new Date().toLocaleString('en-US', {
-    timeZone: 'Asia/Bangkok'
-  });
-  moment.locale();
-
-  console.log(currentDate)
-  //===========ZIN===========
-  var date = moment().format('l');
-  var today = new Date()
-  var inputTimeHours = 8;
-  var text = '8px';
-  var integer = parseInt(text, 10);
-  var inputTimeMinutes = "00"
-  var inputTimeSeconds = "00"
-  var typeHour = "AM"
-
-  var tsCurentTime = strToTimestamp(currentDate)
-  var tsInputTime = strToTimestamp(date +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
-
-    if (tsCurentTime > tsInputTime){
-      var tsInputTime1 = strToTimestamp(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf() + 1) +"/"+
-          today.getFullYear() +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
-
-      console.log(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf() + 1) +"/"+
-          today.getFullYear() +", "+ inputTimeHours+":"+ inputTimeMinutes+ ":"+inputTimeSeconds + " "+typeHour)
-
-      console.log("Ngay mai luc "+ tsInputTime1 + " may phai day, oc cho" )
-    }else {
-      console.log("Dung gio "+ inputTimeHours + " hom nay phai day, oc cho" )
-    }
-
+  console.log(listSuggets[Math.floor(Math.random() * listSuggets.length)])
 });
 
 function strToTimestamp(strDate){
@@ -95,12 +71,10 @@ function handlerMessage(message, senderId,name) {
     {
     var option = message.substring(0,6)
     var time = message.substring(7,12)
-    var parts = time.split(':');
-    var minutes = parts[1]*60+ +parts[0];
     if (option == "sleepy" || option == "Sleepy"|| option == "Sleep"|| option == "sleep") {
-      calTimeWakeUp(minutes,senderId,0)
+      calTimeWakeUp(senderId,0)
     }else if (option == "wakeup"){
-      sendMessage(senderId, "Hi wakeup");
+      calTimeSleep(time,senderId)
     }else {
       sendMessage(senderId, "Kiểm tra lại câu lệnh của bạn và thử lại sau nhé! Gõ \"help\" để xem danh sách câu lệnh.")
     }
@@ -110,21 +84,46 @@ function handlerMessage(message, senderId,name) {
 function showHelp(senderId,name){
   sendMessage(senderId,"Hi,Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n\n" +
       "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời :\n\"sleepy\".\n\n"
-      // + "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00 am\".\n"
+      + "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00 AM\".\n"
       )
 }
 
-function calTimeSleep(time) {
+function calTimeSleep(time,senderId) {
+  let currentDate = new Date().toLocaleString('en-US', {
+    timeZone: 'Asia/Bangkok'
+  });
+  moment.locale();
+  var date = moment().format('l');
+  var today = new Date()
+  var timeConverted = time.replace(" ", ":00 ");
+  var tsCurentTime = strToTimestamp(currentDate)
+  var tsInputTime = strToTimestamp(date +", "+ timeConverted)
+  var timeCal = 0
+  if (tsCurentTime > tsInputTime){
+    timeCal = strToTimestamp(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf() + 1) +"/"+
+        today.getFullYear() +", "+ timeConverted)
+
+  }else {
+    timeCal = strToTimestamp(today.getMonth()+ 1 +"/"+ (today.getDate().valueOf()) +"/"+
+        today.getFullYear() +", "+ timeConverted)
+  }
   var listTimeSleep = []
   for (var i = 0; i <= 6; i++) {
-    var timeSleep = time -  90 * 60 * (i+1) - 14*60
+    var timeSleep = timeCal -  90 * 60 * (i + 1) - 14 * 60
     listTimeSleep.push(timeSleep)
   }
-  sendMessage(senderId,"")
+  sendMessage(senderId,"Để thức dậy vào lúc: "+time+ "thì bạn nên đi ngủ vào nhưng khung giờ như: \n"
+      + timeConverter(listTimeSleep[5])
+      + " hoặc " + timeConverter(listTimeSleep[4])
+      + " hoặc " + timeConverter(listTimeSleep[3])
+      + " hoặc " + timeConverter(listTimeSleep[2])
+      + " hoặc " + timeConverter(listTimeSleep[1])
+      + " hoặc " + timeConverter(listTimeSleep[0])
+  )
 
 }
 
-function calTimeWakeUp(time,senderId,type) {
+function calTimeWakeUp(senderId,type) {
   if (type == 0) {
     const currentDate = new Date().toLocaleString('en-US', {
       timeZone: 'Asia/Bangkok'
@@ -145,7 +144,8 @@ function calTimeWakeUp(time,senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
-    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 3);
+    setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 2000);
+    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2000);
 
   }else {
     showHelp(senderId,name)
