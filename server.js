@@ -27,9 +27,7 @@ var listSuggets = ["Điều chỉnh nhiệt độ phòng. Chuyên gia giấc ng�
 "Hiểu rõ và điều chỉnh được chu kỳ của giấc ngủ là bí quyết giúp bạn có một giấc ngủ ngon lành và thức dậy sảng khoái dù đi ngủ ở bất cứ thời điểm nào."]
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
-  var string = "wakeup 7:00 AM"
-  var time = string.substring(7,string.length)
-  console.log(time)
+
 });
 
 function strToTimestamp(strDate){
@@ -72,11 +70,17 @@ function handlerMessage(message, senderId,name) {
   }else
     {
     var option = message.substring(0,6)
-    var time = message.substring(7,12)
+    var time = message.substring(7,14)
     if (option == "sleepy" || option == "Sleepy"|| option == "Sleep"|| option == "sleep") {
       calTimeWakeUp(senderId,0)
     }else if (option == "wakeup"){
-      calTimeSleep(time,senderId)
+      if (time.substring(0,1) >= 0 || time.substring(0,1) <= 12 ||
+          time.substring(2,4) >= 0 || time.substring(0,1) <= 59 ||
+          time.substring(5,7) == "AM" || time.substring(0,1) == "PM") {
+        calTimeSleep(time,senderId)
+      }else {
+        sendMessage(senderId, "Kiểm tra lại câu lệnh của bạn và thử lại sau nhé! Gõ \"help\" để xem danh sách câu lệnh.")
+      }
     }else {
       sendMessage(senderId, "Kiểm tra lại câu lệnh của bạn và thử lại sau nhé! Gõ \"help\" để xem danh sách câu lệnh.")
     }
