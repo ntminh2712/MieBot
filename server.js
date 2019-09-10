@@ -118,7 +118,7 @@ function calTimeSleep(time,senderId) {
     var timeSleep = timeCal -  90 * 60 * (i + 1) - 14 * 60
     listTimeSleep.push(timeSleep)
   }
-  sendMessage(senderId,"Để thức dậy vào lúc: "+time+ "thì bạn nên đi ngủ vào nhưng khung giờ như: \n"
+  sendMessage(senderId,"Để thức dậy vào lúc: "+time+ " ßßthì bạn nên đi ngủ vào những khung giờ như: \n"
       + timeConverter(listTimeSleep[5])
       + " hoặc " + timeConverter(listTimeSleep[4])
       + " hoặc " + timeConverter(listTimeSleep[3])
@@ -126,7 +126,7 @@ function calTimeSleep(time,senderId) {
       + " hoặc " + timeConverter(listTimeSleep[1])
       + " hoặc " + timeConverter(listTimeSleep[0])
   )
-  setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1000);
+  setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1500);
 }
 
 function calTimeWakeUp(senderId,type) {
@@ -150,8 +150,8 @@ function calTimeWakeUp(senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
-    setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1000);
-    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2000);
+    setTimeout(function(){  sendMessage(senderId, listSuggets[Math.floor(Math.random() * listSuggets.length)]) }, 1500);
+    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2500);
 
   }else {
     showHelp(senderId,name)
