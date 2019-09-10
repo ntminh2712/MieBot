@@ -39,17 +39,10 @@ app.get('/', (req, res) => {
 
     listTimeSleep.push(timeSleep)
   }
-  console.log(currentDate)
+  var date =new Date(listTimeSleep[1])
+  console.log(date.toLocaleTimeString())
   console.log(currentTime)
-  console.log(Date.parse(currentDate))
-  console.log("Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
-      + timeConverter(listTimeSleep[0])
-      + " hoặc " + timeConverter(listTimeSleep[1])
-      + " hoặc " + timeConverter(listTimeSleep[2])
-      + " hoặc " + timeConverter(listTimeSleep[3])
-      + " hoặc " + timeConverter(listTimeSleep[4])
-      + " hoặc " + timeConverter(listTimeSleep[5])
-  )
+
 });
 
 app.get('/webhook', function(req, res) {
@@ -77,13 +70,7 @@ app.post('/webhook', function(req, res) {
 
   res.status(200).send("OK");
 });
-function timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var time = hour + ':' + min ;
-  return time;
-}
+
 function handlerMessage(message, senderId,name) {
   if (message == "help") {
     showHelp(senderId,name)
@@ -106,14 +93,13 @@ function handlerMessage(message, senderId,name) {
 function showHelp(senderId,name){
   sendMessage(senderId,"Hi,Hiện tại MieBot mới chỉ có tính năng tính toán thời gian ngủ và thời gian thức dậy.\n\n" +
       "Để tính thời gian thức dậy bắt đầu từ lúc bạn thực hiện câu lệnh hãy trả lời :\n\"sleepy\".\n\n" +
-      "Để tính thời gian thức dậy tại một thời điểm nhất định bạn thực hiện câu lệnh trả lời :\n\"sleepy+ thời gian\" , ví dụ \"sleep 20:00\".\n\n"+
-      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00\".\n")
+      "Để tính thời gian muốn thức dậy bạn hãy nhắn tin trả lời : \n\"wakeup + thời gian\", ví dụ \"wakeup 7:00 am\".\n")
 }
 
 function calTimeSleep(time) {
   var listTimeSleep = []
   for (var i = 0; i <= 6; i++) {
-    var timeSleep = time - 90*i -14
+    var timeSleep = time -  90 * 60 * (i+1) - 14*60
     listTimeSleep.push(timeSleep)
   }
   sendMessage(senderId,"")
@@ -125,7 +111,7 @@ function calTimeWakeUp(time,senderId,type) {
     const currentDate = new Date().toLocaleString('en-US', {
       timeZone: 'Asia/Bangkok'
     });
-    const currentTime = new Date().toLocaleString('en-US', {
+    const currentTime = new Date().toLocaleTimeString('en-US', {
       timeZone: 'Asia/Bangkok'
     });
     var listTimeSleep = []
@@ -164,9 +150,12 @@ function sendMessage(senderId, message) {
   });
 }
 
+function timeConverter(UNIX_timestamp){
+  var date =new Date(+UNIX_timestamp)
+  return date.toLocaleTimeString();
+}
+
 const port = process.env.PORT || 8000;
 server.listen(port, () => {
   console.log("App is running on port " + port);
 });
-// var port_number = server.listen(process.env.PORT || 3000);
-// app.listen(port_number);
