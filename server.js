@@ -83,7 +83,7 @@ function handlerMessage(message, senderId,name) {
     var parts = time.split(':');
     var minutes = parts[1]*60+ +parts[0];
     if (option == "sleepy" || option == "Sleep") {
-      calTimeWakeUp(minutes,senderId,0)y
+      calTimeWakeUp(minutes,senderId,0)
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
     }else {
