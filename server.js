@@ -18,11 +18,6 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 var server = http.createServer(app);
-var options = {
-      hour: 'numeric',
-      minute: 'numeric'
-    },
-    intlDate = new Intl.DateTimeFormat( undefined, options );
 
 app.get('/', (req, res) => {
   res.send("Home page. Server running okay.");
@@ -35,13 +30,18 @@ app.get('/', (req, res) => {
 
   var listTimeSleep = []
   for (var i = 0; i < 6; i++) {
-    var timeSleep = Date.parse(currentDate)/1000 + 90*60 * (i + 1) + 14 * 60
+    var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i + 1) + 14 * 60
 
     listTimeSleep.push(timeSleep)
   }
-  var date =new Date(listTimeSleep[1])
-  console.log(date.toLocaleTimeString())
-  console.log(currentTime)
+  console.log(listTimeSleep)
+  console.log("Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
+      + timeConverter(listTimeSleep[0])
+      + " hoặc " + timeConverter(listTimeSleep[1])
+      + " hoặc " + timeConverter(listTimeSleep[2])
+      + " hoặc " + timeConverter(listTimeSleep[3])
+      + " hoặc " + timeConverter(listTimeSleep[4])
+      + " hoặc " + timeConverter(listTimeSleep[5]))
 
 });
 
@@ -117,7 +117,7 @@ function calTimeWakeUp(time,senderId,type) {
     });
     var listTimeSleep = []
     for (var i = 0; i < 6; i++) {
-      var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i+1) + 14*60
+      var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i+1) + 14 * 60
       listTimeSleep.push(timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
@@ -152,7 +152,7 @@ function sendMessage(senderId, message) {
 }
 
 function timeConverter(UNIX_timestamp){
-  var date =new Date(+UNIX_timestamp)
+  var date =new Date(+UNIX_timestamp*1000)
   return date.toLocaleTimeString();
 }
 
