@@ -82,7 +82,7 @@ function handlerMessage(message, senderId,name) {
     var time = message.substring(7,12)
     var parts = time.split(':');
     var minutes = parts[1]*60+ +parts[0];
-    if (option == "sleepy" || option == "Sleep") {
+    if (option == "sleepy" || option == "Sleepy"|| option == "Sleep"|| option == "sleep") {
       calTimeWakeUp(minutes,senderId,0)
     }else if (option == "wakeup"){
       sendMessage(senderId, "Hi wakeup");
@@ -119,7 +119,7 @@ function calTimeWakeUp(time,senderId,type) {
     });
     var listTimeSleep = []
     for (var i = 0; i < 6; i++) {
-      var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i+1) + 14 * 60
+      var timeSleep = Date.parse(currentDate)/1000 + 90 * 60 * (i + 1 ) + 14 * 60
       listTimeSleep.push(timeSleep)
     }
     sendMessage(senderId, "Bây giờ là " + currentTime +". Nếu bạn lên giường và đi ngủ ngay, thì bạn nên thức dậy vào những khoảng thời gian: \n"
@@ -130,7 +130,8 @@ function calTimeWakeUp(time,senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
-    sendMessage(senderId, "Chúc bạn ngủ ngon 😘");
+    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2);
+
   }else {
     showHelp(senderId,name)
   }
