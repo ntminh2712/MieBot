@@ -75,7 +75,7 @@ function handlerMessage(message, senderId,name) {
   if (message == "help" || message == "Help") {
     showHelp(senderId,name)
   }else if (message == "hello" || message == "Hello"){
-    sendMessage(senderId, "Hi, cảm ơn vì tin nhắt của bạn, nếu đây là lần đầu thì gõ \"help\" để xem danh sách câu lệnh nhé")
+    sendMessage(senderId, "Hi, cảm ơn vì tin nhắn của bạn, nếu đây là lần đầu thì gõ \"help\" để xem danh sách câu lệnh nhé!")
   }else
     {
     var option = message.substring(0,6)
@@ -130,7 +130,7 @@ function calTimeWakeUp(time,senderId,type) {
         + " hoặc " + timeConverter(listTimeSleep[4])
         + " hoặc " + timeConverter(listTimeSleep[5])
     )
-    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 2);
+    setTimeout(function(){  sendMessage(senderId, "Chúc bạn ngủ ngon 😘"); }, 3);
 
   }else {
     showHelp(senderId,name)
